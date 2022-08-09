@@ -7,11 +7,14 @@ module.exports = {
   async getAll() {
     return await Submissions.find({});
   },
-  async addNew({ name, correct }) {
-    return await new Submissions({ name, correct }).save();
+  async getForQuestion(question) {
+    return await Submissions.find({ question });
   },
-  async countAttempts() {
-    const attempts = await Submissions.find({});
+  async addNew({ name, correct, question }) {
+    return await new Submissions({ name, correct, question }).save();
+  },
+  async countAttempts(question) {
+    const attempts = await Submissions.find({ question });
 
     // find the number of attempts for each name
     const counts = {};
@@ -21,18 +24,28 @@ module.exports = {
       // get the first correct submission time for each name
       if (
         correct &&
-        (!counts[name].submissionTime ||
-          submissionTime < counts[name].submissionTime)
+        (!counts[name].earliestCorrectTime ||
+          submissionTime < counts[name].earliestCorrectTime)
       ) {
-        counts[name].submissionTime = submissionTime;
+        counts[name].earliestCorrectTime = submissionTime;
       }
     });
     // convert to array of objects
-    const result = Object.keys(counts).map(name => ({
-      name,
-      attempts: counts[name].attempts,
-      submissionTime: counts[name].submissionTime,
-    }));
+    const result = Object.keys(counts)
+      .map((name) => ({
+        name,
+        attempts: counts[name].attempts,
+        earliestCorrectTime: counts[name].earliestCorrectTime,
+      }))
+      .sort((a, b) => a.attempts - b.attempts)
+      .sort((a, b) => {
+        // sort by attempts and also first submission of the correct answer.
+        // This is done to an hour accuracy as exact time is not important and this way we get better results.
+        const aDate = new Date(a.submissionTime);
+        const bDate = new Date(b.submissionTime);
+        return aDate.getHours() - bDate.getHours();
+      });
+
     return result;
 
     // This solution almost works but it gets earliest submission time instead of the earliest correct submission time
@@ -48,6 +61,5 @@ module.exports = {
     //   { $sort: { attempts: -1 } },
     // ]);
     // return counts;
-    
-  }
+  },
 };

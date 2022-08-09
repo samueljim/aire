@@ -7,6 +7,10 @@ const SubmissionsSchema = new Schema({
     required: true,
     trim: true,
   },
+  question: {
+    type: Number,
+    required: true,
+  },
   submissionTime: {
     type: Date,
     required: true,

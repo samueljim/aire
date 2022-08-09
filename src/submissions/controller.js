@@ -1,4 +1,5 @@
-const helpers = require('./helpers');
+const helpers = require("./helpers");
+const problems = require("../problems/questions");
 
 module.exports = {
   async getAll(req, res) {
@@ -15,33 +16,76 @@ module.exports = {
       });
     }
   },
-  async addNew(req, res) {
+  async getForQuestion(req, res) {
     try {
-      // TODO work out if result is correct
-      const { name, answer } = req.body;
-      const correct = answer === "correct";
-      const correctTime = (correct) ? new Date() : null;
-      
-      await helpers.addNew({ name, correct, correctTime });
+      const question = parseInt(req.params?.question) || false;
+      const submissions = await helpers.getForQuestion( question );
 
       return res.send({
         status: "success",
+        body: submissions && submissions.length ? submissions : [],
       });
     } catch (error) {
+      console.error(error);
       return res.status(400).send({
         status: "failure",
       });
     }
   },
+  async answerQuestion(req, res) {
+    try {
+      const question = parseInt(req.params?.question) || false;
+
+      if (!question || !problems[question]) {
+        return res.status(400).send({
+          status: "failure",
+          message: "Invalid question",
+        });
+      }
+      const { name, answer } = req.body;
+      
+      if (!answer) {
+        return res.status(400).send({
+          status: "failure",
+          message: "Invalid answer",
+        });
+      }
+      // is the answer correct
+      const correct_answer = problems[question].answer;
+      const correct = correct_answer === answer;
+
+      // write this submission to the database
+      await helpers.addNew({ name, correct, question });
+
+      return res.send({
+        status: "success",
+        correct,
+      });
+    } catch (error) {
+      return res.status(400).send({
+        status: "failure",
+        correct: false,
+      });
+    }
+  },
   async countAttempts(req, res) {
     try {
-      const attempts = await helpers.countAttempts({});
+      const question = parseInt(req.params?.question) || false;
+      if (!question || !problems[question]) {
+        return res.status(400).send({
+          status: "failure",
+          message: "Invalid question",
+        });
+      }
+      
+      let attempts = await helpers.countAttempts(question);
 
       return res.send({
         status: "success",
         body: attempts && attempts.length ? attempts : [],
       });
     } catch (error) {
+      console.log(error);
       return res.status(400).send({
         status: "failure",
       });
