@@ -46,7 +46,7 @@ module.exports = {
         return aDate.getHours() - bDate.getHours();
       })
 
-    return result;
+    return [...result.filter((item) => item.earliestCorrectTime), ...result.filter((item) => !item.earliestCorrectTime)];
 
     // This solution almost works but it gets earliest submission time instead of the earliest correct submission time
     // const counts = await Submissions.aggregate([
