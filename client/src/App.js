@@ -1,31 +1,36 @@
 import './App.css';
 import { useEffect } from 'react';
-import { Route, Link } from "wouter";
+import { Route, Link, useLocation } from "wouter";
 import Login from "./pages/login.js";
 import Question from "./pages/question.js";
 import QuestionsList from "./pages/QuestionsList.js";
 import { themeChange } from "theme-change";
 
 function App() {
+  const [location, setLocation] = useLocation();
+
   useEffect(() => {
     themeChange(false);
   }, []);
-
+  const removeName = () => {
+    window.localStorage.removeItem("name");
+    setLocation("/");
+  };
   return (
-    <div className="min-h-screen overflow-x-hidden">
-      <div class="navbar bg-base-100 bg-neutral l text-neutral-content">
-        <div class="flex-1">
+    <div className="min-h-screen ">
+      <div className="navbar bg-base-100 bg-neutral text-neutral-content flex-wrap justify-between">
+        <div className="">
           <Link href="/">
-            <a class="btn btn-ghost normal-case text-xl">Euler questions</a>
+            <a className="btn btn-ghost normal-case text-xl">Euler questions</a>
           </Link>
         </div>
-        <div class="flex-none">
-          <ul class="menu menu-horizontal p-0">
-            <li className="pr-3">
-              <Link href="/questions">Questions</Link>
-            </li>
-            <select data-choose-theme class="select select-ghost w-40 max-w-xs">
-              <option value="lofi">Default</option>
+        <div className="flex-none">
+          <ul className="menu menu-horizontal p-0">
+            <select
+              data-choose-theme
+              className="select select-ghost w-40 max-w-xs"
+            >
+              <option value="lofi">Theme</option>
               <option value="synthwave">Synthwave</option>
               <option value="forest">Forest</option>
               <option value="lemonade">Lemonade</option>
@@ -39,6 +44,9 @@ function App() {
               <option value="coffee">Coffee</option>
               <option value="retro">Retro</option>
             </select>
+            <li className="pl-3" onClick={removeName}>
+              <div>Logout</div>
+            </li>
           </ul>
         </div>
       </div>

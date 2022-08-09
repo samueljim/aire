@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "main": "index.js",
   "scripts": {
+    "postinstall": "cd client && npm install && npm run build && cd ..",
     "start": "node index.js",
     "dev": "nodemon index.js",
     "test": "jest",

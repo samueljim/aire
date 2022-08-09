@@ -1,5 +1,5 @@
 const request = require("supertest");
-const baseURL = "http://localhost:3000";
+const baseURL = "";
 
 const names = ['penny', 'sam', 'dave', 'mike', 'bob', 'dave', 'alex', 'jane', 'jill', 'jake', 'jim', 'jess', 'joe', 'edward'];
 const randomName = () => {

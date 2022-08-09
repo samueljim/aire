@@ -7,7 +7,7 @@ function Page() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await fetch(`http://localhost:3000/questions`);
+      const res = await fetch(`/questions`);
       const body = await res.json();
       if (body.status === "success") {
         setQuestions(body?.data);
@@ -19,11 +19,11 @@ function Page() {
   }, []);
 
   return (
-    <div className="">
-      <div className="grid grid-cols-3 grid-flow-col auto-rows-max gap-3 ">
+    <div className="container mx-auto">
+      <div className="grid sm:grid-cols-3 grid-cols-1 auto-rows-max gap-3 ma-3">
         {questions.map((question, index) => {
           return (
-            <div className="card bg-base-100 shadow-xl box-border">
+            <div className="card bg-base-100 shadow-xl box-border" key={index}>
               <div className="card-body">
                 <h2 className="card-title">Question {question.number}</h2>
                 <p

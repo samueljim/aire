@@ -44,7 +44,7 @@ module.exports = {
         const aDate = new Date(a.submissionTime);
         const bDate = new Date(b.submissionTime);
         return aDate.getHours() - bDate.getHours();
-      });
+      })
 
     return result;
 

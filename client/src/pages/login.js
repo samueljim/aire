@@ -1,37 +1,45 @@
-import { useEffect, useState } from "react";
-
+import { useEffect, useState, useRef } from "react";
+import { useLocation } from "wouter";
 function Page() {
-  const [name, setName] = useState(window.localStorage.getItem("name"));
-  const removeName = () => {
-    window.localStorage.removeItem("name");
-    setName("");
+  const [location, setLocation] = useLocation();
+  const n = window.localStorage.getItem("name")
+  const [name, setName] = useState(n);
+  const inputRef = useRef();
+
+  if (n) {
+    setLocation('/questions');
   }
-  
+
   const setNameStorage = () => {
-    window.localStorage.setItem("name", name);
+    if (name) {
+      window.localStorage.setItem("name", name);
+      setLocation("/questions");
+    } else {
+      inputRef?.current?.classList.add("input-error");
+      inputRef?.current?.focus()
+    }
   };
+
   return (
     <div className="flex place-content-center h-full">
-      <div class="card w-96 bg-base-100 shadow-xl pt-3">
-        <div class="card-body">
-          <h2 class="card-title">What's your name?</h2>
+      <div className="card w-96 bg-base-100 shadow-xl pt-3">
+        <div className="card-body">
+          <h2 className="card-title">Login</h2>
           <p>Enter your name here to have your scores counted</p>
           <input
             type="text"
+            ref={inputRef}
             autoFocus={true}
             placeholder="Enter your name"
-            class="input w-full input-bordered input-lg max-w-xs"
+            className="input w-full input-bordered input-lg max-w-xs"
             onChange={(e) => {
               setName(e.target.value);
             }}
           />
 
-          <div class="card-actions justify-end">
-            <button class="btn btn-primary" onClick={removeName}>
-              Logout
-            </button>
-            <button class="btn btn-primary" onClick={setNameStorage}>
-              Set name
+          <div className="card-actions justify-end">
+            <button className="btn btn-primary" onClick={setNameStorage}>
+              Login
             </button>
           </div>
         </div>
