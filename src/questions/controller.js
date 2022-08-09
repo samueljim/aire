@@ -6,14 +6,38 @@ module.exports = {
       let questions = [];
       for (const question in problems) {
         questions.push({
-          question,
+          number: question,
           description: problems[question].description,
         });
       }
 
       return res.send({
         status: "success",
-        body: questions && questions.length ? questions : [],
+        data: questions && questions.length ? questions : [],
+      });
+    } catch (error) {
+      console.error(error);
+      return res.status(400).send({
+        status: "failure",
+      });
+    }
+  },
+  async getOne(req, res) {
+    try {
+      const question = parseInt(req.params?.question) || false;
+
+      if (!question || !problems[question]) {
+        return res.status(400).send({
+          status: "failure",
+          message: "Invalid question",
+        });
+      }
+
+      return res.send({
+        status: "success",
+        data: {
+          description: problems[question].description,
+        },
       });
     } catch (error) {
       console.error(error);

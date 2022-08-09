@@ -2,8 +2,9 @@ const express = require('express');
 const router = express.Router();
 
 const controller = require('./controller');
-const prefix = "questions";
+const prefix = "question";
 
-router.get(`/${prefix}`, controller.getAll);
+router.get(`/${prefix}s`, controller.getAll);
+router.get(`/${prefix}/:question`, controller.getOne);
 
 module.exports = router;

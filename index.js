@@ -7,6 +7,17 @@ const app = express();
 const router = require('./src/router');
 const path = require("path");
 
+app.all("*", function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Content-Type,Content-Length, Authorization, Accept,X-Requested-With"
+  );
+  res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
+  next();
+});
+
+app.use(bodyParser.json());
 const mongoose = require('mongoose');
 const MONGO_PORT = 27017;
 
@@ -37,11 +48,8 @@ db.on('error', () => {
   }, dbRetryTime);
 });
 
-app.get(`/`, (req, res) => {
-  res.sendFile(`./public/index.html`);
-}); 
-
 db.on('connected', function () {
   app.use(router);
+  app.use(express.static("client/build"));
   app.listen(port, () => console.log(`All set up. Listening on ${port}!`))
 });

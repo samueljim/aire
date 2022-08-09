@@ -8,7 +8,7 @@ module.exports = {
 
       return res.send({
         status: "success",
-        body: submissions && submissions.length ? submissions : [],
+        data: submissions && submissions.length ? submissions : [],
       });
     } catch (error) {
       return res.status(400).send({
@@ -23,7 +23,7 @@ module.exports = {
 
       return res.send({
         status: "success",
-        body: submissions && submissions.length ? submissions : [],
+        data: submissions && submissions.length ? submissions : [],
       });
     } catch (error) {
       console.error(error);
@@ -47,12 +47,12 @@ module.exports = {
       if (!answer) {
         return res.status(400).send({
           status: "failure",
-          message: "Invalid answer",
+          message: "Invalid answer format",
         });
       }
       // is the answer correct
       const correct_answer = problems[question].answer;
-      const correct = correct_answer === answer;
+      const correct = correct_answer == answer;
 
       // write this submission to the database
       await helpers.addNew({ name, correct, question });
@@ -82,7 +82,7 @@ module.exports = {
 
       return res.send({
         status: "success",
-        body: attempts && attempts.length ? attempts : [],
+        data: attempts && attempts.length ? attempts : [],
       });
     } catch (error) {
       console.log(error);
