@@ -10,9 +10,8 @@ function Page({ number, refresh }) {
 
   const fetchData = async () => {
     try {
-    const res = await fetch(`/submissions/${number}/metrics`);
+    const res = await fetch(`/api/submissions/${number}/metrics`);
     const body = await res.json();
-    console.log(body);
     if (body.status === "success") {
       setLeaderboard(body?.data);
     } else {

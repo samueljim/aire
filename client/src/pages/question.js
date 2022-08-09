@@ -17,13 +17,12 @@ function Page({ number }) {
   const answerQuestion = async () => {
     setLoading(true);
     setCorrect(false);
-    console.log("answerQuestion", answer);
     if (!answer) {
       setLoading(false);
       return;
     }
     try {
-      const res = await fetch(`/submissions/${number}`, {
+      const res = await fetch(`/api/submissions/${number}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -49,9 +48,8 @@ function Page({ number }) {
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await fetch(`/question/${number}`);
+      const res = await fetch(`/api/question/${number}`);
       const body = await res.json();
-      console.log(body);
       if (body.status === "success") {
         setQuestion(body?.data);
       } else {

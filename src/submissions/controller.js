@@ -85,7 +85,6 @@ module.exports = {
         data: attempts && attempts.length ? attempts : [],
       });
     } catch (error) {
-      console.log(error);
       return res.status(400).send({
         status: "failure",
       });

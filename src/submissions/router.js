@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const controller = require('./controller');
-const prefix = "submissions";
+const prefix = "api/submissions";
 
 router.get(`/${prefix}`, controller.getAll);
 router.get(`/${prefix}/:question`, controller.getForQuestion);

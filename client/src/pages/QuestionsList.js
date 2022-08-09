@@ -7,7 +7,7 @@ function Page() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await fetch(`/questions`);
+      const res = await fetch(`/api/questions`);
       const body = await res.json();
       if (body.status === "success") {
         setQuestions(body?.data);

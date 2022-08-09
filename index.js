@@ -51,5 +51,10 @@ db.on('error', () => {
 db.on('connected', function () {
   app.use(router);
   app.use(express.static("client/build"));
+  
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname + "/client/build/index.html"));
+  });
+
   app.listen(port, () => console.log(`All set up. Listening on ${port}!`))
 });

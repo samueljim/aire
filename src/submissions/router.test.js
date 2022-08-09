@@ -1,5 +1,5 @@
 const request = require("supertest");
-const baseURL = "";
+const baseURL = "http://localhost:3000/api";
 
 const names = ['penny', 'sam', 'dave', 'mike', 'bob', 'dave', 'alex', 'jane', 'jill', 'jake', 'jim', 'jess', 'joe', 'edward'];
 const randomName = () => {
@@ -49,7 +49,7 @@ describe("check that submitting a answer works", () => {
          .send({ name: randomName() });
        expect(response.statusCode).toBe(400);
        expect(response.body.status).toBe("failure");
-       expect(response.body.message).toBe("Invalid answer");
+       expect(response.body.message).toBe("Invalid answer format");
      });
      it("incorrect answer to question", async () => {
        const response = await request(baseURL)

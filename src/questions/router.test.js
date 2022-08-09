@@ -1,5 +1,5 @@
 const request = require("supertest");
-const baseURL = "";
+const baseURL = "http://localhost:3000/api";
 
 describe("test /questions", () => {
   it("check that a valid status code is returned", async () => {
